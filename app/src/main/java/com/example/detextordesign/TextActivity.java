@@ -27,6 +27,7 @@ public class TextActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_text);
+        String res = getIntent().getStringExtra("res");
         sqlHelper = new DatabaseHelper(this);
         db = sqlHelper.getWritableDatabase();
         outText = findViewById(R.id.editText);
@@ -61,7 +62,7 @@ public class TextActivity extends AppCompatActivity {
                 ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText("label", outText.getText());
                 clipboard.setPrimaryClip(clip);
-                Toast.makeText(TextActivity.this, "Текст скопирован в буфер обмена", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TextActivity.this, "The text is copied to the clipboard", Toast.LENGTH_SHORT).show();
             }
 
         });
