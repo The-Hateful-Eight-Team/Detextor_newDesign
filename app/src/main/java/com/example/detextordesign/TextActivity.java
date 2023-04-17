@@ -31,6 +31,7 @@ public class TextActivity extends AppCompatActivity {
         sqlHelper = new DatabaseHelper(this);
         db = sqlHelper.getWritableDatabase();
         outText = findViewById(R.id.editText);
+        outText.setText(res);
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_TEXT, outText.getText().toString());
         cv.put(DatabaseHelper.COLUMN_FAV, 0);
