@@ -5,31 +5,79 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TextActivity">
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
-        android:gravity="left|top"
-        android:inputType="textMultiLine"
-        android:text="ТЕКСТ после распознавания"
-        app:layout_constraintBottom_toTopOf="@+id/bt_save"
+
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/my_drawer_layout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:context=".MainActivity"
+        tools:ignore="HardcodedText">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="100dp"
+                android:gravity="left|top"
+                android:inputType="textMultiLine"
+                android:text="ТЕКСТ после распознавания"
+                app:layout_constraintBottom_toTopOf="@+id/bt_save"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </LinearLayout>
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/navigation_menu" />
+
+    </androidx.drawerlayout.widget.DrawerLayout>
+
+    <Button
+        android:id="@+id/bt_favourites"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="16dp"
+        android:layout_weight="1"
+        android:background="@drawable/square"
+        android:drawableTop="@drawable/favorite_24_white"
+        android:gravity="center_horizontal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bt_save"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/bt_save"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="77dp"
+        android:layout_height="77dp"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:background="@drawable/circle"
+        android:background="@drawable/square"
         android:drawableTop="@drawable/baseline_save_alt_24"
         android:gravity="center"
         android:onClick="write"
@@ -38,37 +86,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/bt_favourites" />
-
-    <Button
-        android:id="@+id/bt_favourites"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/circle"
-        android:drawableTop="@drawable/favorite_24_white"
-        android:gravity="center_horizontal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_save"
-        app:layout_constraintStart_toEndOf="@+id/bt_back" />
-
-    <Button
-        android:id="@+id/bt_back"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="20dp"
-        android:layout_weight="1"
-        android:background="@drawable/circle"
-        android:drawableTop="@drawable/baseline_arrow_back_24"
-        android:gravity="center_horizontal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/bt_favourites"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

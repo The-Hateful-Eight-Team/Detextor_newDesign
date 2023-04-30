@@ -40,14 +40,21 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -68,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle actionBarDrawerToggle;
 
-    private String url = "http://" + "44.202.71.75" + ":" + 80 + "/";
+    private String url = "https://detextor.community.saturnenterprise.io/";
     private String postBodyString;
     private MediaType mediaType;
     private RequestBody requestBody;
@@ -245,9 +252,7 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
-            Intent intent6 = new Intent(MainActivity.this, TextActivity.class);
-            intent6.putExtra("res", res);
-            startActivity(intent6);
+
 
         }
 
@@ -260,18 +265,42 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
         selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         postBodyString = Base64.encodeToString(byteArray, Base64.DEFAULT);
-        mediaType = MediaType.parse("base64");
-        requestBody = RequestBody.create(postBodyString, mediaType);
+        JSONObject jsonObject = new JSONObject();
+
+        ArrayList<Integer> img_size = new ArrayList<Integer>();
+
+
+        img_size.add(selectedImage.getHeight());
+        img_size.add(selectedImage.getWidth());
+        img_size.add(3);
+
+        JSONArray jsArray = new JSONArray(img_size);
+
+        try {
+            jsonObject.put("image", postBodyString);
+            jsonObject.put("image_size", jsArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String json = jsonObject.toString();
+        mediaType = MediaType.parse("application/json");
+        requestBody = RequestBody.create(json, mediaType);
+        System.out.println("==============================REQUEST BODY===========================================");
+        System.out.println(requestBody);
         return requestBody;
     }
 
     private void sendRequest(String URL , Uri uri) throws FileNotFoundException {
         RequestBody requestBody = buildRequestBody(uri);
-        OkHttpClient okHttpClient = new OkHttpClient();
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(1000, TimeUnit.SECONDS)
+                .build();
         Request request = new Request
                 .Builder()
                 .post(requestBody)
-                .url(URL + "greeting")
+                //.get()
+                .url(URL + "process_img")
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -282,6 +311,7 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
 
 
                         Toast.makeText(MainActivity.this, "Something went wrong:" + " " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        System.out.println("Something went wrong:" + " " + e.getMessage());
                         call.cancel();
 
 
@@ -294,14 +324,15 @@ public class MainActivity extends AppCompatActivity implements ImageAnalysis.Ana
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            Toast.makeText(MainActivity.this, "Recognition is done", Toast.LENGTH_LONG).show();
-                            String answer = Objects.requireNonNull(response.body()).string();
-                            res = Base64.encodeToString(Base64.decode(answer, Base64.DEFAULT), Base64.DEFAULT);
+                        Toast.makeText(MainActivity.this, "Recognition is done", Toast.LENGTH_LONG).show();
+                        String answer = "Text";
+                        System.out.println("========================================ANSWER===========================================");
+                        System.out.println(answer);
+                        res = answer;
+                        Intent intent6 = new Intent(MainActivity.this, TextActivity.class);
+                        intent6.putExtra("res", res);
+                        startActivity(intent6);
 
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
                     }
                 });
             }
